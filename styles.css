@@ -1,0 +1,1099 @@
+/* Advercase : copie personnelle des quatre fichiers .otf dans assets/fonts/.
+   font-display:block empeche l'affichage transitoire d'une autre police (FOUT).
+   Pour une mise en ligne, utiliser la licence Webfont appropriee. */
+@font-face {
+  font-family: "Advercase Local";
+  src: url("assets/fonts/Advercase-Font-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Advercase Local";
+  src: url("assets/fonts/Advercase-Font-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: block;
+}
+@font-face {
+  font-family: "Advercase Local";
+  src: url("assets/fonts/Advercase-Font-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Advercase Local";
+  src: url("assets/fonts/Advercase-Font-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: block;
+}
+:root {
+  --black:#090909;--white:#fff;--gray-square:#d8d8d8;
+  --serif:"Advercase Local","Bodoni MT",Didot,Georgia,serif;
+  --sans:"Inter","Helvetica Neue",Arial,sans-serif;
+}
+*,*::before,*::after {box-sizing:border-box;}
+html {scroll-behavior:smooth;scrollbar-gutter:stable;}
+body {margin:0;color:var(--black);background:var(--white);font-family:var(--sans);-webkit-font-smoothing:antialiased;}
+a {color:inherit;text-decoration:none;}
+a:focus-visible {outline:2px solid #6478ff;outline-offset:6px;}
+.sr-only {position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;}
+.skip-link {position:fixed;z-index:99;left:10px;top:10px;transform:translateY(-180%);padding:12px 18px;background:white;color:black;}
+.skip-link:focus-visible {transform:none;}
+
+/* Intro sombre : très épurée */
+.hero {position:relative;width:100%;height:100svh;min-height:540px;color:#fff;background:#090909;overflow:hidden;}
+.site-header {position:absolute;top:25px;left:0;width:100%;z-index:10;}
+.main-nav {display:flex;align-items:center;justify-content:center;gap:50px;font:500 13px/1.2 var(--sans);letter-spacing:-.012em;}
+.main-nav a {transition:opacity .2s;}
+.main-nav a:hover {opacity:.55;}
+.hero-center {position:absolute;left:50%;top:48.5%;transform:translate(-50%,-50%);z-index:2;text-align:center;width:min(95%,1450px);}
+.hero h1 {margin:0;font:400 clamp(65px,5.85vw,118px)/1.07 var(--serif);letter-spacing:-.014em;white-space:nowrap;}
+.hero-center p {margin:8px 0 0;font:400 clamp(21px,1.62vw,32px)/1.25 var(--serif);letter-spacing:0;}
+.scroll-down {position:absolute;left:50%;bottom:5.4%;display:grid;place-items:center;width:39px;height:39px;border:1.2px solid rgba(255,255,255,.86);border-radius:50%;z-index:4;animation:arrow-float 2.2s ease-in-out infinite;transition:color .22s,background .22s;}
+.scroll-down svg {width:17px;height:17px;}
+.scroll-down:hover {color:var(--black);background:#fff;animation-play-state:paused;}
+@keyframes arrow-float {0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-8px)}}
+
+
+/* Deux vagues sur « A creative mind. » uniquement, toutes les 4 secondes.
+   Les glyphes reviennent au blanc plein, aucun clignotement.
+   index.html?animation=off : comparaison statique. */
+.hero-animated-line {text-wrap:balance;}
+.hero-word {display:inline-block;white-space:nowrap;}
+.hero-char {display:inline-block;color:#fff;-webkit-text-stroke:.8px transparent;}
+.hero--animated #hero-title .hero-char {
+  animation:letter-two-passes 4s linear infinite both;
+  animation-delay:calc(var(--char-index) * 47ms);
+}
+@keyframes letter-two-passes {
+  0%,1.25% {color:#fff;-webkit-text-stroke-color:transparent;}
+  4.5%,7.25% {color:transparent;-webkit-text-stroke-color:#fff;}
+  10.5%,29.375% {color:#fff;-webkit-text-stroke-color:transparent;}
+  33.75%,36.25% {color:transparent;-webkit-text-stroke-color:#fff;}
+  41.25%,100% {color:#fff;-webkit-text-stroke-color:transparent;}
+}
+
+/* Présentation compacte : révélation progressive mot par mot au scroll. */
+.intro {min-height:0;display:flex;align-items:center;justify-content:center;padding:clamp(88px,8vw,126px) 24px clamp(26px,2.7vw,40px);text-align:center;background:#fff;}
+/* Texte d’introduction : retours éditoriaux et révélation mot par mot. */
+.intro-copy {margin:0;max-width:820px;color:#aeaeae;font:400 clamp(18px,1.5vw,22px)/1.55 var(--sans);letter-spacing:-.032em;text-wrap:balance;}
+.intro-line {display:block;}
+.intro-line--outro {margin-top:12px;}
+.intro-word {color:#aeaeae;}
+
+/* Sept projets, sept prévisualisations INDEPENDANTES.
+   Chacune reste fixe et peut coexister avec d'autres au survol rapide. */
+.work {position:relative;min-height:0;height:auto;padding-bottom:clamp(70px,6vw,110px);background:#fff;overflow:hidden;isolation:isolate;}
+.work-previews {position:absolute;inset:0;z-index:1;pointer-events:none;}
+.work-preview {position:absolute;left:var(--preview-left);top:var(--preview-top);width:var(--preview-size);aspect-ratio:1;background:var(--preview-gray);transform:translate(-50%,-50%) rotate(var(--preview-angle));opacity:0;pointer-events:none;transition:opacity .32s cubic-bezier(.22,1,.36,1);will-change:opacity;}
+.work-preview.is-visible {opacity:1;}
+.work-preview[data-preview="nikon"] {--preview-left:22%;--preview-top:17%;--preview-size:230px;--preview-angle:-7deg;--preview-gray:#d4d4d4;}
+.work-preview[data-preview="limits"] {--preview-left:78%;--preview-top:29%;--preview-size:255px;--preview-angle:8deg;--preview-gray:#c9c9c9;}
+.work-preview[data-preview="singularity"] {--preview-left:18%;--preview-top:43%;--preview-size:265px;--preview-angle:5deg;--preview-gray:#e0e0e0;}
+.work-preview[data-preview="rimowa"] {--preview-left:79%;--preview-top:55%;--preview-size:220px;--preview-angle:-10deg;--preview-gray:#bababa;}
+.work-preview[data-preview="canvas"] {--preview-left:21%;--preview-top:69%;--preview-size:240px;--preview-angle:10deg;--preview-gray:#d0d0d0;}
+.work-preview[data-preview="details"] {--preview-left:79%;--preview-top:76%;--preview-size:235px;--preview-angle:6deg;--preview-gray:#e5e5e5;}
+.work-preview[data-preview="poem"] {--preview-left:17%;--preview-top:83%;--preview-size:195px;--preview-angle:-6deg;--preview-gray:#bfbfbf;}
+.work-center {position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:clamp(28px,3vw,40px);width:100%;height:auto;pointer-events:none;padding:clamp(55px,5.1vw,92px) 16px 30px;}
+.work-names {position:relative;top:auto;list-style:none;text-align:center;white-space:nowrap;padding:0;margin:0;font:400 clamp(50px,3.75vw,76px)/1.27 var(--serif);letter-spacing:-.009em;pointer-events:auto;}
+.work-names li {margin:0;}
+.work-names a {display:inline-block;transition:opacity .23s,transform .23s;}
+.work-names:has(a:hover) a:not(:hover) {opacity:.32;}
+.work-names a:hover {transform:translateY(-2px);}
+.all-projects {position:relative;left:auto;bottom:auto;transform:none;border:1px solid #393939;border-radius:999px;padding:10px 18px;background:#fff;white-space:nowrap;font:400 15px/1.15 var(--sans);pointer-events:auto;transition:background .2s,color .2s;}
+.all-projects:hover {background:var(--black);color:#fff;}
+
+/* About : nav et centrage identiques à Home. Gouttière de scrollbar stable à travers les pages. */
+.about-page {position:relative;width:100%;height:100svh;overflow:hidden;background:var(--black);color:var(--white);}
+.about-stage {height:100svh;width:100%;display:grid;place-items:center;padding:80px 24px 40px;overflow:hidden;}
+.about-center {text-align:center;width:min(100%,1100px);display:flex;align-items:center;flex-direction:column;}
+.about-label {font:400 clamp(21px,1.62vw,32px)/1.25 var(--serif);letter-spacing:0;margin:0;}
+.about-contacts {display:flex;flex-direction:column;align-items:center;margin-top:clamp(24px,4.5vh,43px);gap:clamp(10px,2vh,18px);}
+.about-contact {font:400 clamp(27px,4.2vw,66px)/1.13 var(--serif);letter-spacing:-.016em;transition:opacity .25s ease;white-space:nowrap;}
+.about-contact:hover {opacity:.52;}
+.about-contact--phone {font-size:clamp(24px,3vw,42px);letter-spacing:0;}
+.about-meta {margin-top:clamp(30px,6vh,55px);display:flex;flex-direction:column;gap:10px;}
+.about-meta p {margin:0;color:#a9a9a9;font:400 clamp(13px,1.04vw,16px)/1.45 var(--sans);letter-spacing:-.015em;}
+.about-meta p:last-child {color:#f2f2f2;}
+@media (max-width:700px) {
+  .about-stage {padding:80px 14px 38px;}
+  .about-label {font-size:clamp(22px,3.2vw,28px);}
+  .about-contact--email {font-size:clamp(21px,5.8vw,40px);}
+  .about-contact--phone {font-size:clamp(22px,5.1vw,32px);}
+  .about-meta {gap:9px;}
+  .about-meta p {font-size:13px;}
+}
+@media (max-height:580px) {
+  .about-stage {padding-top:65px;padding-bottom:16px;}
+  .about-contacts {margin-top:16px;gap:9px;}
+  .about-meta {margin-top:18px;gap:6px;}
+}
+
+/* Pages secondaires provisoires */
+.subpage {min-height:100vh;background:white;}
+.sub-nav {display:flex;align-items:center;justify-content:space-between;padding:25px 40px;font:500 14px var(--sans);}
+.sub-nav nav {display:flex;gap:38px;}
+.sub-head {text-align:center;padding:90px 22px 55px;}
+.sub-head h1 {margin:0;font:400 clamp(68px,8vw,130px)/1.05 var(--serif);letter-spacing:-.012em;}
+.sub-head p {max-width:640px;margin:24px auto 0;font:400 16px/1.6 var(--sans);color:#747474;}
+.project-grid {width:min(1290px,88vw);margin:0 auto;padding-bottom:130px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;}
+.project-tile {display:flex;flex-direction:column;gap:16px;scroll-margin-top:28px;}
+.tile-placeholder {width:100%;aspect-ratio:1;background:var(--gray-square);transition:background .25s;}
+.project-tile:hover .tile-placeholder {background:#bdbdbd;}
+.project-tile span {font:400 clamp(22px,2vw,32px)/1.15 var(--serif);}
+.about-content {width:min(800px,85vw);margin:8vh auto 12vh;text-align:center;font:400 clamp(22px,2.4vw,38px)/1.4 var(--sans);letter-spacing:-.04em;}
+
+@media (max-width:1150px) {
+
+  .work-names {top:auto;font-size:clamp(45px,4.75vw,64px);}
+  .work-preview[data-preview="nikon"],.work-preview[data-preview="singularity"],.work-preview[data-preview="canvas"],.work-preview[data-preview="poem"] {--preview-left:12%;}
+  .work-preview[data-preview="limits"],.work-preview[data-preview="rimowa"],.work-preview[data-preview="details"] {--preview-left:89%;}
+  .work-preview {width:min(var(--preview-size),24vw);}
+}
+@media (max-width:800px) {
+  .hero {min-height:600px;}
+  .main-nav {gap:35px;}
+  .hero h1 {font-size:clamp(52px,9vw,76px);white-space:normal;}
+  .hero-center p {font-size:clamp(22px,3.2vw,28px);}
+  .intro {min-height:0;padding:74px 24px 26px;}
+  .intro-copy {max-width:650px;font-size:clamp(18px,2.6vw,21px);letter-spacing:-.028em;}
+
+  .work-names {top:auto;font-size:clamp(39px,5.7vw,51px);white-space:normal;line-height:1.30;}
+  .work-preview {width:min(var(--preview-size),31vw);opacity:0;}
+  .work-preview[data-preview="nikon"],.work-preview[data-preview="singularity"],.work-preview[data-preview="canvas"],.work-preview[data-preview="poem"] {--preview-left:10%;}
+  .work-preview[data-preview="limits"],.work-preview[data-preview="rimowa"],.work-preview[data-preview="details"] {--preview-left:90%;}
+  .work-center {padding-top:45px;gap:28px;}
+  .project-grid {grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:520px) {
+  .site-header {top:24px;}
+  .main-nav {font-size:13px;gap:30px;}
+  .hero {min-height:540px;}
+  .hero-center {top:47%;width:96%;}
+  .hero h1 {font-size:clamp(47px,11vw,62px);line-height:1.06;}
+  .hero-center p {font-size:20px;margin-top:12px;}
+  .about-label {font-size:20px;}
+  .scroll-down {width:37px;height:37px;bottom:6%;}
+  .scroll-down svg {width:16px;height:16px;}
+  .intro {min-height:0;padding:72px 26px 22px;}
+  .intro-copy {max-width:420px;font-size:18px;line-height:1.6;letter-spacing:-.025em;}
+  .work {padding-bottom:75px;}
+  .work-names {top:auto;font-size:clamp(34px,8.25vw,43px);line-height:1.32;}
+  .work-preview {width:min(var(--preview-size),38vw);}
+  .all-projects {font-size:14px;padding:10px 17px;}
+  .work-center {padding-top:40px;gap:25px;}
+  .sub-nav {padding:23px 18px;}
+  .sub-nav nav {gap:22px;}
+  .sub-head {padding:75px 18px 50px;}
+  .project-grid {grid-template-columns:1fr;gap:30px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .hero--animated #hero-title .hero-char {color:#fff;-webkit-text-stroke-color:transparent;animation:none;}
+  
+  html {scroll-behavior:auto;}
+  *,*::before,*::after {animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+}
+
+
+/* === V12 : liste de projets depuis Home, plus de page Work séparée === */
+.work-names a, .work-names span[data-preview] {display:inline-block;transition:opacity .23s,transform .23s;}
+.work-names span[data-preview] {cursor:default;}
+.work-names:has([data-preview]:hover) [data-preview]:not(:hover) {opacity:.32;}
+.work-names [data-preview]:hover {transform:translateY(-2px);}
+.all-projects {display:inline-flex;align-items:center;gap:10px;}
+.all-projects span {font-size:16px;line-height:1;transition:transform .25s ease;}
+.all-projects:hover span {transform:translate(2px,-2px);}
+
+/* === Nikon Lenswear : composition centrée et minimaliste === */
+.project-page {background:var(--white);}
+.project-cover {position:relative;min-height:540px;height:100svh;color:white;background:#080808;overflow:hidden;isolation:isolate;}
+.project-cover-image {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;}
+.project-cover-shade {position:absolute;inset:0;z-index:-1;background:rgba(0,0,0,.12);pointer-events:none;}
+.project-cover-content {
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:100%;padding:110px 24px 65px;gap:clamp(22px,3vw,36px);text-align:center;
+}
+/* Même typographie et même taille responsive que le titre de Home. */
+.project-cover h1 {margin:0;font:400 clamp(65px,5.85vw,118px)/1.07 var(--serif);letter-spacing:-.014em;white-space:nowrap;}
+.project-cover-meta {display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px 38px;font:400 clamp(12px,1vw,15px)/1.5 var(--sans);letter-spacing:-.015em;}
+.project-cover-meta p {display:flex;align-items:baseline;justify-content:center;gap:9px;margin:0;white-space:nowrap;}
+.project-cover-meta strong {font-weight:600;color:#aaa;}
+.project-overview {margin:auto;padding:clamp(75px,8vw,128px) 24px clamp(75px,8vw,120px);text-align:center;}
+/* Même famille, taille et interlignage que le paragraphe de Home. */
+.project-overview-body {max-width:820px;margin:0 auto;font:400 clamp(18px,1.5vw,22px)/1.55 var(--sans);letter-spacing:-.032em;}
+.project-overview-body p {margin:0 0 1.5em;}
+.project-overview-body p:last-child {margin-bottom:0;}
+.project-gallery {max-width:1600px;margin:0 auto;padding:0 clamp(22px,5.8vw,110px) clamp(75px,8vw,130px);}
+.gallery-grid {display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(15px,2vw,35px);row-gap:clamp(48px,5.5vw,85px);}
+.gallery-item {margin:0;min-width:0;}
+.gallery-item--wide {grid-column:1/-1;}
+.gallery-item--half {grid-column:span 6;}
+.gallery-media {position:relative;background:#d3d3d3;width:100%;overflow:hidden;}
+.gallery-media img {width:100%;height:100%;object-fit:cover;display:block;}
+.gallery-media--landscape {aspect-ratio:16/9;}
+.gallery-media--panorama {aspect-ratio:2.1/1;}
+.gallery-media--portrait {aspect-ratio:4/5;}
+.gallery-media--square {aspect-ratio:1/1;}
+.gallery-media--gray-2 {background:#c5c5c5;}
+.gallery-media--gray-3 {background:#ddd;}
+.gallery-media--gray-4 {background:#bfbfbf;}
+.gallery-media--gray-5 {background:#e0e0e0;}
+.gallery-item figcaption {padding-top:17px;font:400 14px/1.4 var(--sans);text-align:center;}
+.gallery-item figcaption strong {font-weight:500;display:block;}
+.gallery-item figcaption small {display:block;font:400 12px/1.6 var(--sans);color:#858585;margin-top:5px;}
+@media (max-width:900px) {
+  .project-cover h1 {font-size:clamp(52px,9vw,76px);}
+  .project-cover-meta {max-width:820px;gap:10px 26px;}
+  .project-overview-body {max-width:650px;font-size:clamp(18px,2.6vw,21px);}
+}
+@media (max-width:600px) {
+  .project-cover-content {padding:105px 18px 65px;gap:25px;}
+  .project-cover h1 {font-size:clamp(47px,11vw,62px);line-height:1.06;}
+  .project-cover-meta {font-size:12px;gap:10px;flex-direction:column;max-width:100%;}
+  .project-cover-meta p {white-space:normal;flex-wrap:wrap;gap:3px 7px;}
+  .project-overview {padding:78px 25px 80px;}
+  .project-overview-body {font-size:18px;line-height:1.6;letter-spacing:-.025em;}
+  .project-gallery {padding:0 20px 85px;}
+  .gallery-grid {grid-template-columns:1fr;row-gap:42px;}
+  .gallery-item--wide,.gallery-item--half {grid-column:1/-1;}
+  .gallery-media--panorama {aspect-ratio:16/10;}
+  .gallery-media--portrait {aspect-ratio:4/4.5;}
+  .gallery-item figcaption {font-size:13px;padding-top:12px;}
+}
+
+/* Sur mobile, les barres de défilement sont normalement superposées :
+   ne pas garder la gouttière desktop de 15 px. Le défilement reste actif. */
+@media (max-width:700px) {
+  html { scrollbar-gutter:auto; scrollbar-width:none; }
+  html::-webkit-scrollbar {display:none;}
+}
+
+
+/* === V14 : couverture moins envahissante, contenus recentrés === */
+.project-cover-content {
+  inset:auto;
+  left:0;
+  top:61%;
+  transform:translateY(-50%);
+  padding:0 24px;
+  gap:clamp(12px,1.5vw,20px);
+}
+.project-cover h1 {
+  font-size:clamp(48px,4.6vw,88px);
+  line-height:1.08;
+}
+.project-cover-domains {
+  margin:0;
+  max-width:calc(100vw - 48px);
+  font:400 clamp(12px,.96vw,14px)/1.65 var(--sans);
+  letter-spacing:-.012em;
+  color:#e5e5e5;
+  text-wrap:balance;
+}
+.project-overview {padding-top:clamp(82px,8vw,135px);}
+.project-client {
+  display:flex;
+  justify-content:center;
+  align-items:baseline;
+  flex-wrap:wrap;
+  column-gap:10px;
+  row-gap:3px;
+  margin:0 auto clamp(34px,4.4vw,62px);
+  color:var(--black);
+  font:400 clamp(13px,1vw,15px)/1.5 var(--sans);
+  letter-spacing:-.015em;
+}
+.project-client strong {font-weight:600;}
+.project-gallery {padding-bottom:clamp(34px,4vw,56px);}
+.project-bottom-nav {
+  display:flex;
+  justify-content:center;
+  padding:0 20px clamp(76px,8vw,120px);
+  text-align:center;
+}
+@media (max-width:900px) {
+  .project-cover h1 {font-size:clamp(45px,7.3vw,68px);}
+}
+@media (max-width:600px) {
+  .project-cover-content {top:60%;padding:0 17px;gap:13px;}
+  .project-cover h1 {font-size:clamp(37px,9.3vw,53px);white-space:normal;}
+  .project-cover-domains {font-size:12px;max-width:330px;}
+  .project-overview {padding-top:76px;}
+  .project-client {margin-bottom:35px;font-size:13px;}
+  .project-gallery {padding-bottom:34px;}
+  .project-bottom-nav {padding-bottom:80px;}
+}
+
+
+/* === V15 : couverture rééquilibrée, client en secondaire et 11 supports Nikon === */
+.project-cover-content {top:50%;}
+.project-cover h1 {font-size:clamp(54px,5.2vw,98px);}
+.project-cover-domains {font-size:clamp(12px,1vw,15px);}
+.project-client span {color:#919191;}
+.gallery-media--screen {aspect-ratio:4/3;}
+@media (max-width:900px) {
+  .project-cover h1 {font-size:clamp(48px,7.6vw,78px);}
+}
+@media (max-width:600px) {
+  .project-cover-content {top:51%;}
+  .project-cover h1 {font-size:clamp(40px,10vw,57px);}
+  .project-cover-domains {font-size:12px;}
+  .gallery-media--screen {aspect-ratio:4/3;}
+}
+
+
+/* === V17 : MOSAÏQUE NIKON UNIQUEMENT. Tous les styles V15 sont préservés. === */
+.gallery-grid--mosaic {row-gap:clamp(28px,3.3vw,52px);column-gap:clamp(14px,1.7vw,26px);}
+.gallery-grid--mosaic .gallery-item--full {grid-column:span 12;}
+.gallery-grid--mosaic .gallery-item--eight {grid-column:span 8;}
+.gallery-grid--mosaic .gallery-item--four {grid-column:span 4;}
+.gallery-grid--mosaic .gallery-item--third {grid-column:span 4;}
+.gallery-grid--mosaic .gallery-item--quarter {grid-column:span 3;}
+.gallery-grid--mosaic .gallery-media--brand {aspect-ratio:2.48;}
+.gallery-grid--mosaic .gallery-media--video {aspect-ratio:16/9;}
+.gallery-grid--mosaic .gallery-media--slide {aspect-ratio:1.24;}
+.gallery-grid--mosaic .gallery-media--campaign {aspect-ratio:1.8;}
+.gallery-grid--mosaic .gallery-media--bus {aspect-ratio:.96;}
+.gallery-grid--mosaic .gallery-media--editorial {aspect-ratio:1.07;}
+.gallery-grid--mosaic .gallery-media--display {aspect-ratio:1.07;}
+.gallery-grid--mosaic .gallery-media--compact {aspect-ratio:1.18;}
+.gallery-media--with-play {display:grid;place-items:center;}
+.gallery-play-icon {display:grid;place-items:center;width:52px;height:52px;border:1px solid rgba(255,255,255,.85);border-radius:50%;background:rgba(20,20,20,.13);color:#fff;}
+.gallery-play-icon svg {width:20px;height:20px;margin-left:3px;}
+@media(max-width:900px){
+ .gallery-grid--mosaic .gallery-item--full {grid-column:span 12;}
+ .gallery-grid--mosaic .gallery-item--eight {grid-column:span 8;}
+ .gallery-grid--mosaic .gallery-item--four {grid-column:span 4;}
+ .gallery-grid--mosaic .gallery-item--third {grid-column:span 4;}
+ .gallery-grid--mosaic .gallery-item--quarter {grid-column:span 6;}
+ .gallery-grid--mosaic .gallery-media--brand {aspect-ratio:1.92;}
+}
+@media(max-width:600px){
+ .gallery-grid--mosaic {grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px;row-gap:30px;}
+ .gallery-grid--mosaic .gallery-item--full,.gallery-grid--mosaic .gallery-item--eight,.gallery-grid--mosaic .gallery-item--four {grid-column:span 2;}
+ .gallery-grid--mosaic .gallery-item--third,.gallery-grid--mosaic .gallery-item--quarter {grid-column:span 1;}
+ .gallery-grid--mosaic .gallery-media--brand {aspect-ratio:1.6;}
+ .gallery-grid--mosaic .gallery-media--slide {aspect-ratio:1.7;}
+ .gallery-grid--mosaic .gallery-media--editorial {aspect-ratio:.83;}
+ .gallery-grid--mosaic .gallery-media--compact {aspect-ratio:.9;}
+ .gallery-grid--mosaic .gallery-item figcaption {padding-top:10px;}
+ .gallery-grid--mosaic .gallery-item figcaption small {font-size:11px;}
+ .gallery-play-icon {width:42px;height:42px;}
+}
+
+/* V18 — changements circonscrits : respiration du texte Home + révélation Nikon. */
+.intro {padding-top:clamp(104px,9vw,142px);padding-bottom:clamp(42px,4vw,60px);}
+.intro-copy strong {font-weight:650;}
+.project-overview-body .intro-word {color:#aeaeae;}
+@media(max-width:800px){.intro{padding:88px 24px 43px;}}
+@media(max-width:520px){.intro{padding:84px 26px 39px;}}
+
+
+/* V22 — Lecteurs YouTube sur une ligne complète de la galerie.
+   Le reste des styles V21 (typographie, grilles, animations) est inchangé. */
+.gallery-grid--mosaic .gallery-item--full:has(.gallery-media--youtube) {grid-column:1 / -1;}
+.gallery-grid--mosaic .gallery-media--youtube {
+  display:block;
+  position:relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  background:#080808;
+  overflow:hidden;
+}
+.gallery-media--youtube iframe {
+  display:block;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+.gallery-youtube-link {
+  display:inline-block;
+  margin-top:8px;
+  color:#565656;
+  font:400 12px/1.5 var(--sans);
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+.gallery-youtube-link:hover {color:#151515;}
+.gallery-youtube-link:focus-visible {outline:2px solid #151515;outline-offset:3px;}
+
+
+/* V23 — vignettes vidéo YouTube (compatibles en local) + intégration des visuels Nikon. */
+.gallery-media--contain {background:#efefef;}
+.gallery-media--contain img {object-fit:contain;background:#efefef;}
+.gallery-media--youtube-thumb {background:#060606;}
+.gallery-video-card {position:absolute;inset:0;display:block;color:#fff;text-decoration:none;}
+.gallery-video-card img {width:100%;height:100%;object-fit:cover;display:block;}
+.gallery-video-overlay {position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.55));transition:background .25s ease, transform .25s ease;}
+.gallery-video-card:hover .gallery-video-overlay {background:linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,.65));}
+.gallery-video-card:focus-visible {outline:2px solid #ffffff;outline-offset:4px;}
+.gallery-play-icon {width:64px;height:64px;border-radius:999px;border:1.5px solid rgba(255,255,255,.84);display:grid;place-items:center;font-size:24px;line-height:1;backdrop-filter:blur(2px);}
+.gallery-video-cta {font:500 12px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;}
+@media (max-width:520px){.gallery-play-icon{width:54px;height:54px;font-size:20px;}.gallery-video-cta{font-size:11px;}}
+
+
+/* V24 — Galerie Nikon simplifiée : uniquement les images, sans légendes ni fonds gris. */
+.project-gallery--image-only {padding-bottom:clamp(84px,8vw,120px);}
+.gallery-grid--image-only {row-gap:clamp(12px,1.6vw,20px);column-gap:clamp(12px,1.4vw,20px);}
+.gallery-grid--image-only .gallery-item figcaption {display:none;}
+.gallery-grid--image-only .gallery-media {background:transparent;}
+.gallery-grid--image-only .gallery-media--contain {background:transparent;}
+.gallery-grid--image-only .gallery-media--contain img {object-fit:cover;background:transparent;}
+.gallery-grid--image-only .gallery-video-card {position:absolute;inset:0;}
+.gallery-grid--image-only .gallery-youtube-link {display:none;}
+@media (max-width:600px){.gallery-grid--image-only{row-gap:12px;column-gap:12px;}}
+
+
+/* V25 — ajustements Home, galerie Nikon, logo client et lightbox */
+.intro-copy strong {font-weight:700;}
+.project-client-meta {display:inline-flex;align-items:center;gap:14px;color:#919191;}
+.project-client-logo {width:44px;height:44px;object-fit:contain;display:block;flex:0 0 auto;}
+.project-gallery--nikon-refined {padding-top:0;}
+.gallery-grid--nikon-refined {row-gap:clamp(18px,2.2vw,28px);column-gap:clamp(16px,1.7vw,24px);align-items:start;}
+.gallery-grid--nikon-refined .gallery-item {overflow:hidden;}
+.gallery-grid--nikon-refined .gallery-media {background:transparent;border-radius:0;}
+.gallery-grid--nikon-refined .gallery-item figcaption {display:none;}
+.project-gallery .gallery-media img {cursor:zoom-in;transition:transform .45s cubic-bezier(.2,.65,.2,1),filter .35s ease;will-change:transform;}
+.project-gallery .gallery-item:hover .gallery-media img {transform:scale(1.035);}
+.project-gallery .gallery-item:focus-within .gallery-media img {transform:scale(1.035);}
+.gallery-grid--nikon-refined .gallery-media--brand {aspect-ratio:1.9;}
+.gallery-grid--nikon-refined .gallery-media--editorial {aspect-ratio:1.24;}
+.gallery-grid--nikon-refined .gallery-media--slide {aspect-ratio:4/3;}
+.gallery-grid--nikon-refined .gallery-media--compact {aspect-ratio:1.05;}
+.gallery-grid--nikon-refined .gallery-media--screen {aspect-ratio:4/3;}
+.gallery-grid--nikon-refined .gallery-media--display {aspect-ratio:1.1;}
+.gallery-grid--nikon-refined .gallery-media--campaign {aspect-ratio:1.78;}
+.gallery-grid--nikon-refined .gallery-media--bus {aspect-ratio:.8;}
+.gallery-media--youtube-embed {aspect-ratio:16/9;background:#050505;display:flex;align-items:center;justify-content:center;}
+.gallery-media--youtube-embed iframe {width:100%;height:100%;border:0;display:block;}
+.gallery-youtube-fallback {position:absolute;right:16px;bottom:14px;z-index:2;padding:8px 12px;border-radius:999px;background:rgba(10,10,10,.72);color:#fff;font:500 11px/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;text-decoration:none;backdrop-filter:blur(6px);}
+.gallery-youtube-fallback:hover {background:rgba(10,10,10,.9);}
+.gallery-lightbox {position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(5,5,5,.84);opacity:0;pointer-events:none;transition:opacity .24s ease;}
+.gallery-lightbox.is-open {opacity:1;pointer-events:auto;}
+.gallery-lightbox__inner {position:relative;max-width:min(92vw,1420px);max-height:92vh;display:flex;align-items:center;justify-content:center;}
+.gallery-lightbox__image {display:block;max-width:100%;max-height:92vh;object-fit:contain;box-shadow:0 25px 70px rgba(0,0,0,.35);}
+.gallery-lightbox__close {position:absolute;top:14px;right:14px;z-index:2;border:0;border-radius:999px;padding:11px 14px;background:rgba(12,12,12,.74);color:#fff;font:500 12px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;cursor:pointer;}
+body.lightbox-open {overflow:hidden;}
+@media (max-width:900px){.project-client-meta{gap:10px;}.project-client-logo{width:38px;height:38px;}}
+@media (max-width:700px){.gallery-grid--nikon-refined{grid-template-columns:repeat(2,minmax(0,1fr));}.gallery-grid--nikon-refined .gallery-item--eight,.gallery-grid--nikon-refined .gallery-item--four,.gallery-grid--nikon-refined .gallery-item--half,.gallery-grid--nikon-refined .gallery-item--full{grid-column:span 2;}.gallery-grid--nikon-refined .gallery-item--quarter{grid-column:span 1;}.gallery-grid--nikon-refined .gallery-media--bus{aspect-ratio:.92;}.gallery-grid--nikon-refined .gallery-media--slide{aspect-ratio:1.1;}.gallery-youtube-fallback{right:10px;bottom:10px;padding:7px 10px;font-size:10px;}}
+@media (max-width:520px){.project-gallery .gallery-item:hover .gallery-media img{transform:none;}.gallery-grid--nikon-refined{row-gap:12px;column-gap:12px;}.project-client-logo{width:34px;height:34px;}.gallery-lightbox{padding:16px;}.gallery-lightbox__close{top:10px;right:10px;padding:10px 12px;font-size:11px;}}
+
+
+/* V26 — Nikon: seven intentional rows and natural image proportions.
+   Scope is Nikon-only; all other project pages keep their existing CSS. */
+.project-client:has(.project-client-meta) {align-items:center;}
+.project-client-meta {display:inline-flex;align-items:center;gap:12px;}
+.project-client-meta > span {color:#919191;}
+.project-client-meta .project-client-logo {width:38px;height:38px;object-fit:contain;flex:0 0 auto;}
+.project-gallery--nikon-v26 {max-width:1600px;margin-inline:auto;padding-bottom:clamp(70px,7vw,110px);}
+.nikon-gallery {display:flex;flex-direction:column;gap:clamp(24px,3.2vw,49px);}
+.nikon-gallery__row {display:grid;gap:clamp(12px,1.55vw,23px);align-items:start;min-width:0;}
+.nikon-gallery__row--1 {grid-template-columns:repeat(2,minmax(0,1fr));}
+.nikon-gallery__row--2 {grid-template-columns:minmax(0,1.778fr) minmax(0,1.61fr) minmax(0,1.425fr);}
+.nikon-gallery__row--3 {grid-template-columns:repeat(4,minmax(0,1fr));}
+.nikon-gallery__row--4 {grid-template-columns:minmax(0,1.778fr) minmax(0,1.418fr);}
+.nikon-gallery__row--5 {grid-template-columns:minmax(0,1fr);}
+.nikon-gallery__row--6 {grid-template-columns:repeat(2,minmax(0,1fr));}
+.nikon-gallery__row--7 {grid-template-columns:minmax(0,.65fr) minmax(0,1.135fr) minmax(0,.912fr);}
+.nikon-gallery__item {margin:0;min-width:0;overflow:hidden;}
+.nikon-gallery__media {aspect-ratio:auto!important;overflow:hidden;line-height:0;background:transparent!important;}
+.nikon-gallery__media img {width:100%;height:auto;object-fit:initial;display:block;transition:transform .45s cubic-bezier(.2,.65,.2,1);transform-origin:center;}
+.nikon-gallery__media:hover img,.nikon-gallery__media:focus-within img {transform:scale(1.03);}
+.nikon-gallery__video {position:relative;aspect-ratio:16 / 9;background:#080808;}
+.nikon-gallery__video iframe {display:block;width:100%;height:100%;border:0;}
+.nikon-gallery__youtube-link {position:absolute;bottom:16px;right:16px;padding:8px 12px;border-radius:999px;background:rgba(0,0,0,.76);color:#fff;font:500 11px/1.2 var(--sans);text-decoration:none;z-index:1;}
+/* Ensure no image is forced into a gray box from older gallery rules. */
+.project-gallery--nikon-v26 .gallery-media img {height:auto;object-fit:initial;}
+/* Lightbox close is deliberately just a simple cross. */
+.gallery-lightbox__close {top:12px;right:12px;width:38px;height:38px;display:grid;place-items:center;padding:0;border:0;border-radius:0;background:transparent;color:#fff;font:300 32px/1 var(--sans);text-shadow:0 1px 5px rgba(0,0,0,.75);cursor:pointer;}
+.gallery-lightbox__close:hover {opacity:.72;}
+.gallery-lightbox__close:focus-visible {outline:2px solid #fff;outline-offset:3px;}
+@media(max-width:760px){
+ .nikon-gallery {gap:clamp(18px,4vw,30px);}
+ .nikon-gallery__row--2 {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .nikon-gallery__row--2 .nikon-gallery__item:first-child {grid-column:1 / -1;}
+ .nikon-gallery__row--3 {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .nikon-gallery__row--7 {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .nikon-gallery__row--7 .nikon-gallery__item:first-child {grid-column:1 / -1;}
+}
+@media(max-width:520px){
+ .nikon-gallery__row {gap:12px;}
+ .nikon-gallery__row--1,.nikon-gallery__row--4,.nikon-gallery__row--6 {grid-template-columns:minmax(0,1fr);}
+ .nikon-gallery__row--7 {grid-template-columns:minmax(0,1fr);}
+ .nikon-gallery__row--7 .nikon-gallery__item:first-child {grid-column:auto;}
+ .project-gallery--nikon-v26 .nikon-gallery__media:hover img {transform:none;}
+ .gallery-lightbox__close {top:9px;right:9px;width:36px;height:36px;font-size:29px;}
+ .nikon-gallery__youtube-link {right:10px;bottom:10px;font-size:10px;}
+}
+
+
+/* V27 — Nikon hero image, centered logo above client, and captions under each media. */
+.project-cover-image {filter:brightness(.62);}
+.project-cover-shade {background:linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.38) 55%, rgba(0,0,0,.26) 100%);}
+.project-client-block {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;margin:0 auto clamp(34px,4.4vw,62px);}
+.project-client-logo--stack {width:64px;height:64px;object-fit:contain;display:block;}
+.project-client-block .project-client {display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:0;color:var(--black);font:400 clamp(13px,1vw,15px)/1.5 var(--sans);letter-spacing:-.015em;}
+.project-client-block .project-client strong {font-weight:600;}
+.project-client-name {color:#919191;}
+.project-gallery--nikon-v26 .nikon-gallery__item {overflow:visible;}
+.nikon-gallery__caption {margin:14px 0 0;color:#4b4b4b;font:400 13px/1.45 var(--sans);letter-spacing:-.012em;text-align:center;}
+.nikon-gallery__row--5 .nikon-gallery__caption {margin-top:12px;}
+@media (max-width:900px){.project-client-logo--stack{width:56px;height:56px;}}
+@media (max-width:520px){.project-client-block{gap:13px;margin-bottom:35px;}.project-client-logo--stack{width:50px;height:50px;}.project-client-block .project-client{font-size:13px;gap:8px;}.nikon-gallery__caption{margin-top:10px;font-size:12px;line-height:1.4;}}
+
+
+/* V28 — Nikon : légendes éditoriales concises et logo client un peu plus petit. */
+.project-client-logo--stack {width:54px;height:54px;}
+.nikon-gallery__caption {display:flex;flex-direction:column;align-items:center;gap:5px;margin-top:13px;padding-inline:2px;color:#171717;}
+.nikon-gallery__caption-title {font:500 13px/1.35 var(--sans);letter-spacing:-.018em;}
+.nikon-gallery__caption-description {display:block;max-width:40ch;color:#858585;font:400 12px/1.45 var(--sans);letter-spacing:-.012em;}
+.nikon-gallery__row--3 .nikon-gallery__caption-description {max-width:27ch;}
+@media(max-width:900px){.project-client-logo--stack{width:48px;height:48px;}}
+@media(max-width:520px){.project-client-logo--stack{width:44px;height:44px;}.nikon-gallery__caption{margin-top:10px;gap:4px;}.nikon-gallery__caption-title{font-size:12px;}.nikon-gallery__caption-description{font-size:11px;}}
+
+
+/* V29 — Nikon: une courte légende grise par visuel, liens officiels sous les sites web. */
+.project-gallery--nikon-v26 .nikon-gallery__caption {
+  display:block;
+  margin-top:10px;
+  padding:0 1px;
+  color:#858585;
+  font:400 12px/1.4 var(--sans);
+  letter-spacing:-.015em;
+  text-align:center;
+  white-space:nowrap;
+}
+.project-gallery--nikon-v26 .nikon-gallery__caption-line {display:block;}
+.project-gallery--nikon-v26 .nikon-gallery__sites {
+  display:flex;justify-content:center;align-items:center;flex-wrap:wrap;
+  gap:0 9px;margin-top:5px;
+  font:400 11px/1.4 var(--sans);
+}
+.project-gallery--nikon-v26 .nikon-gallery__sites a {
+  color:#6b6b6b; text-decoration:underline; text-decoration-color:#bbb; text-underline-offset:3px;
+  transition:color .2s ease;
+}
+.project-gallery--nikon-v26 .nikon-gallery__sites a:hover {color:#141414;}
+.project-gallery--nikon-v26 .nikon-gallery__sites a:focus-visible {outline:2px solid #777;outline-offset:3px;}
+.project-gallery--nikon-v26 .nikon-gallery__site-separator {color:#a3a3a3;}
+@media (max-width:1100px) {
+  .project-gallery--nikon-v26 .nikon-gallery__caption {white-space:normal;text-wrap:pretty;}
+}
+@media (max-width:520px) {
+  .project-gallery--nikon-v26 .nikon-gallery__caption {font-size:11px;line-height:1.4;margin-top:8px;}
+  .project-gallery--nikon-v26 .nikon-gallery__sites {font-size:10.5px;gap:0 6px;}
+}
+
+
+/* V31 — Nikon : lien sur la ligne de légende et vraie image carrée au hover. */
+.work-preview[data-preview="nikon"] {
+  background:#d4d4d4 url("assets/images/nikon/nikon-hover-carre-v40.webp") center / cover no-repeat;
+}
+.project-gallery--nikon-v26 .nikon-gallery__caption-line--links {
+  display:inline;
+  white-space:nowrap;
+}
+.project-gallery--nikon-v26 .nikon-gallery__caption-line--links a {
+  display:inline;
+  color:inherit;
+  text-decoration:underline;
+  text-decoration-color:#bbb;
+  text-underline-offset:2px;
+  transition:color .2s ease;
+}
+.project-gallery--nikon-v26 .nikon-gallery__caption-line--links a:hover {color:#111;}
+.project-gallery--nikon-v26 .nikon-gallery__caption-line--links a:focus-visible {outline:2px solid #777;outline-offset:2px;}
+@media (max-width:500px) {
+  .project-gallery--nikon-v26 .nikon-gallery__caption-line--links {white-space:normal;}
+}
+
+
+/* V32 — Cartes vidéo simples vers YouTube (Nikon + Limen). */
+.project-video-link {
+  position:relative;display:flex;align-items:center;justify-content:center;
+  width:100%;aspect-ratio:16 / 9;background:#2b2b2b;color:#fff;text-decoration:none;overflow:hidden;
+  transition:transform .35s cubic-bezier(.2,.65,.2,1), background-color .24s ease;
+}
+.project-video-link::before {
+  content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.14));
+}
+.project-video-link:hover,.project-video-link:focus-visible {background:#242424;}
+.project-video-link:hover .project-video-link__play,.project-video-link:focus-visible .project-video-link__play {transform:scale(1.06);}
+.project-video-link:focus-visible {outline:2px solid #777;outline-offset:4px;}
+.project-video-link__play {
+  position:relative;z-index:1;display:grid;place-items:center;width:82px;height:82px;border-radius:999px;
+  background:rgba(255,255,255,.08);box-shadow:0 0 0 1px rgba(255,255,255,.14) inset;
+  font:400 34px/1 var(--sans);transition:transform .35s cubic-bezier(.2,.65,.2,1);
+}
+
+/* V32 — Home : vrai visuel au hover pour LIMEN. */
+.work-preview[data-preview="limits"] {
+  background:#c9c9c9 url("assets/images/limen/limen-hover-carre-v33.webp") center / cover no-repeat;
+}
+
+/* V32 — Client LIMEN. */
+.project-client-logo--limen {width:104px;height:auto;}
+@media (max-width:900px) {.project-client-logo--limen {width:92px;}}
+@media (max-width:520px) {.project-client-logo--limen {width:78px;}}
+
+/* V32 — Galerie LIMEN, calée sur la structure Nikon. */
+.project-gallery--limen-v32 .nikon-gallery__caption {color:#8a8a8a;}
+.project-gallery--limen-v32 .nikon-gallery__caption-line {display:block;}
+.project-gallery--limen-v32 .nikon-gallery__caption-line--links {
+  display:inline;white-space:nowrap;
+}
+.project-gallery--limen-v32 .nikon-gallery__caption-line--links a {
+  color:inherit;text-decoration:underline;text-decoration-color:#bbb;text-underline-offset:2px;transition:color .2s ease;
+}
+.project-gallery--limen-v32 .nikon-gallery__caption-line--links a:hover {color:#111;}
+.project-gallery--limen-v32 .nikon-gallery__caption-line--links a:focus-visible {outline:2px solid #777;outline-offset:2px;}
+.limen-gallery__row--1 {grid-template-columns:minmax(0,1fr);}
+.limen-gallery__row--2 {grid-template-columns:repeat(2,minmax(0,1fr));}
+.limen-gallery__row--3 {grid-template-columns:minmax(0,1.28fr) minmax(0,.82fr) minmax(0,.9fr);}
+.limen-gallery__row--4 {grid-template-columns:minmax(0,1fr);}
+.limen-gallery__row--5 {grid-template-columns:repeat(2,minmax(0,1fr));}
+.limen-gallery__row--6 {grid-template-columns:repeat(6,minmax(0,1fr));}
+@media (max-width:1100px) {
+  .limen-gallery__row--6 {grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media (max-width:760px) {
+  .limen-gallery__row--3,.limen-gallery__row--5,.limen-gallery__row--6 {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .limen-gallery__row--3 .nikon-gallery__item:first-child {grid-column:1 / -1;}
+}
+@media (max-width:520px) {
+  .limen-gallery__row--2,.limen-gallery__row--3,.limen-gallery__row--5,.limen-gallery__row--6 {grid-template-columns:minmax(0,1fr);}
+  .project-gallery--limen-v32 .nikon-gallery__caption-line--links {white-space:normal;}
+}
+
+
+/* V33 — Aperçus vidéo image simple cliquable. */
+.project-video-thumb {display:block;width:100%;text-decoration:none;transition:transform .35s cubic-bezier(.2,.65,.2,1);}
+.project-video-thumb img {display:block;width:100%;height:auto;}
+.project-video-thumb:hover,.project-video-thumb:focus-visible {transform:scale(1.01);}
+.project-video-thumb:focus-visible {outline:2px solid #777;outline-offset:4px;}
+
+/* V33 — Logo LIMEN fourni par l'utilisateur. */
+.project-client-logo--limen {width:132px;height:auto;}
+@media (max-width:900px) {.project-client-logo--limen {width:114px;}}
+@media (max-width:520px) {.project-client-logo--limen {width:96px;}}
+
+/* V33 — Galerie LIMEN : structure plus alignée. */
+.project-gallery--limen-v33 .nikon-gallery__caption {color:#8a8a8a;}
+.project-gallery--limen-v33 .nikon-gallery__caption-line {display:block;}
+.project-gallery--limen-v33 .nikon-gallery__caption-line--links {display:inline;white-space:nowrap;}
+.project-gallery--limen-v33 .nikon-gallery__caption-line--links a {color:inherit;text-decoration:underline;text-decoration-color:#bbb;text-underline-offset:2px;transition:color .2s ease;}
+.project-gallery--limen-v33 .nikon-gallery__caption-line--links a:hover {color:#111;}
+.project-gallery--limen-v33 .nikon-gallery__caption-line--links a:focus-visible {outline:2px solid #777;outline-offset:2px;}
+.limen-gallery__row--1 {grid-template-columns:minmax(0,1fr);}
+.limen-gallery__row--2 {grid-template-columns:repeat(2,minmax(0,1fr));}
+.limen-gallery__row--3 {grid-template-columns:minmax(0,1.22fr) minmax(0,.78fr);align-items:start;}
+.limen-gallery__row--4 {grid-template-columns:minmax(0,1fr);}
+.limen-gallery__row--5 {grid-template-columns:repeat(2,minmax(0,1fr));}
+.limen-gallery__row--6 {grid-template-columns:repeat(6,minmax(0,1fr));}
+.limen-gallery__row--7 {grid-template-columns:minmax(0,.56fr);justify-content:center;}
+@media (max-width:1100px) {.limen-gallery__row--6 {grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media (max-width:760px) {.limen-gallery__row--3,.limen-gallery__row--5,.limen-gallery__row--6 {grid-template-columns:repeat(2,minmax(0,1fr));}.limen-gallery__row--3 .nikon-gallery__item:first-child,.limen-gallery__row--7 .nikon-gallery__item {grid-column:1 / -1;}}
+@media (max-width:520px) {.limen-gallery__row--2,.limen-gallery__row--3,.limen-gallery__row--5,.limen-gallery__row--6,.limen-gallery__row--7 {grid-template-columns:minmax(0,1fr);}.project-gallery--limen-v33 .nikon-gallery__caption-line--links {white-space:normal;}}
+
+
+/* V34 — LIMEN : nouveau visuel hover Home. */
+.work-preview[data-preview="limits"] {background:#c9c9c9 url("assets/images/limen/limen-hover-carre-v34.webp") center / cover no-repeat;}
+
+/* V34 — LIMEN : logo client rapproché du nom. */
+.project-client-block--limen-tight {gap:8px;}
+.project-client-block--limen-tight .project-client {gap:10px;}
+@media (max-width:520px){.project-client-block--limen-tight{gap:6px;}}
+
+/* V34 — LIMEN : alignements de galerie. */
+.project-gallery--limen-v34 .nikon-gallery__caption {color:#8a8a8a;}
+.project-gallery--limen-v34 .nikon-gallery__caption-line {display:block;}
+.project-gallery--limen-v34 .nikon-gallery__caption-line--links {display:inline;white-space:nowrap;}
+.project-gallery--limen-v34 .nikon-gallery__caption-line--links a {color:inherit;text-decoration:underline;text-decoration-color:#bbb;text-underline-offset:2px;transition:color .2s ease;}
+.project-gallery--limen-v34 .nikon-gallery__caption-line--links a:hover {color:#111;}
+.project-gallery--limen-v34 .nikon-gallery__caption-line--links a:focus-visible {outline:2px solid #777;outline-offset:2px;}
+.project-gallery--limen-v34 .limen-gallery__row--1 {grid-template-columns:minmax(0,1fr);}
+.project-gallery--limen-v34 .limen-gallery__row--2 {grid-template-columns:repeat(2,minmax(0,1fr));}
+.project-gallery--limen-v34 .limen-gallery__row--3 {grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;}
+.project-gallery--limen-v34 .limen-gallery__row--4 {grid-template-columns:minmax(0,1fr);}
+.project-gallery--limen-v34 .limen-gallery__row--5 {grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;}
+.project-gallery--limen-v34 .limen-gallery__row--6 {grid-template-columns:repeat(6,minmax(0,1fr));}
+.project-gallery--limen-v34 .limen-gallery__row--7 {grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;}
+.project-gallery--limen-v34 .limen-gallery__media--row3 {aspect-ratio:4/3 !important;overflow:hidden;line-height:0;background:transparent !important;}
+.project-gallery--limen-v34 .limen-gallery__media--row3 img,
+.project-gallery--limen-v34 .limen-gallery__media--row5 img,
+.project-gallery--limen-v34 .limen-gallery__media--row7 img {width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.65,.2,1);}
+.project-gallery--limen-v34 .limen-gallery__media--row5 {aspect-ratio:16/9 !important;overflow:hidden;line-height:0;background:transparent !important;}
+.project-gallery--limen-v34 .limen-gallery__media--row7 {aspect-ratio:16/9 !important;overflow:hidden;line-height:0;background:transparent !important;}
+.project-gallery--limen-v34 .limen-gallery__image--rollup {object-position:center 14%;}
+.project-gallery--limen-v34 .limen-gallery__image--livret {object-position:center 44%;}
+.project-gallery--limen-v34 .project-doc-thumb {display:block;text-decoration:none;color:inherit;}
+.project-gallery--limen-v34 img[data-no-lightbox="true"] {cursor:pointer;}
+@media (max-width:1100px){.project-gallery--limen-v34 .limen-gallery__row--6 {grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media (max-width:760px){.project-gallery--limen-v34 .limen-gallery__row--3,.project-gallery--limen-v34 .limen-gallery__row--5,.project-gallery--limen-v34 .limen-gallery__row--6,.project-gallery--limen-v34 .limen-gallery__row--7 {grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (max-width:520px){.project-gallery--limen-v34 .limen-gallery__row--2,.project-gallery--limen-v34 .limen-gallery__row--3,.project-gallery--limen-v34 .limen-gallery__row--5,.project-gallery--limen-v34 .limen-gallery__row--6,.project-gallery--limen-v34 .limen-gallery__row--7 {grid-template-columns:minmax(0,1fr);}.project-gallery--limen-v34 .nikon-gallery__caption-line--links {white-space:normal;}}
+
+
+/* V35 — RIMOWA : nouveau visuel hover Home. */
+.work-preview[data-preview="rimowa"] {background:#bababa url("assets/images/rimowa/rimowa-hover-square.webp") center / cover no-repeat;}
+
+/* V35 — RIMOWA : galerie projet. */
+.project-gallery--rimowa-v35 .nikon-gallery__caption {color:#8a8a8a;}
+.project-gallery--rimowa-v35 .nikon-gallery__caption-line {display:block;}
+.project-gallery--rimowa-v35 .rimowa-gallery__row--1 {grid-template-columns:minmax(0,1fr);}
+.project-gallery--rimowa-v35 .rimowa-gallery__row--2 {grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;}
+.project-gallery--rimowa-v35 .rimowa-gallery__row--3 {grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;}
+.project-gallery--rimowa-v35 .rimowa-gallery__row--4 {grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.6fr);align-items:start;}
+.project-gallery--rimowa-v35 .rimowa-gallery__row--5 {grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start;}
+.project-gallery--rimowa-v35 .rimowa-gallery__row--6 {grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row1 {line-height:0;background:transparent !important;overflow:hidden;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row2,
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row3,
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row4-small,
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row4-wide,
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row5-landscape,
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row5-portrait,
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row6 {line-height:0;background:transparent !important;overflow:hidden;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row2 {aspect-ratio:2/3 !important;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row3 {aspect-ratio:4/5 !important;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row4-small {aspect-ratio:3/2 !important;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row4-wide {aspect-ratio:12/5 !important;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row5-landscape {aspect-ratio:3/2 !important;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row5-portrait {aspect-ratio:4/5 !important;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row6 {aspect-ratio:16/9 !important;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media img {width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.65,.2,1);}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row1 img {width:100%;height:auto;object-fit:contain;}
+@media (max-width:980px){.project-gallery--rimowa-v35 .rimowa-gallery__row--2,.project-gallery--rimowa-v35 .rimowa-gallery__row--4 {grid-template-columns:repeat(2,minmax(0,1fr));}.project-gallery--rimowa-v35 .rimowa-gallery__row--4 .nikon-gallery__item:last-child{grid-column:1 / -1;}}
+@media (max-width:640px){.project-gallery--rimowa-v35 .rimowa-gallery__row--2,.project-gallery--rimowa-v35 .rimowa-gallery__row--3,.project-gallery--rimowa-v35 .rimowa-gallery__row--4,.project-gallery--rimowa-v35 .rimowa-gallery__row--5,.project-gallery--rimowa-v35 .rimowa-gallery__row--6 {grid-template-columns:minmax(0,1fr);}}
+
+
+/* V36 — Rimowa : logo client & légendes homogènes. */
+.project-client-block--rimowa {gap:12px;}
+.project-client-logo--rimowa {display:block;width:clamp(135px,12vw,166px);height:auto;max-width:50vw;object-fit:contain;}
+.project-gallery--rimowa-v35 .nikon-gallery__caption {
+  white-space:normal;
+  overflow-wrap:normal;
+  text-wrap:pretty;
+}
+@media(max-width:520px){
+  .project-client-block--rimowa{gap:10px;}
+  .project-client-logo--rimowa{width:142px;}
+}
+
+/* V38 — Deux shootings Rimowa de même format pour une ligne alignée. */
+.project-gallery--rimowa-v35 .rimowa-gallery__row--5 {grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;}
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row5-landscape,
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row5-portrait {aspect-ratio:3/2 !important;}
+@media (max-width:640px) {
+  .project-gallery--rimowa-v35 .rimowa-gallery__row--5 {grid-template-columns:minmax(0,1fr);}
+}
+
+
+/* V39 — Vans / Off the Canvas */
+.work-preview[data-preview="canvas"] {
+  background:#d2d2d2 url("assets/images/vans/vans-hover-square.webp") center / cover no-repeat;
+}
+.project-client-block--vans {gap:9px;}
+.project-client-logo--vans {width:115px;max-width:48vw;height:auto;object-fit:contain;display:block;}
+.project-client-block--peugeot {gap:10px;}
+.project-client-logo--peugeot {width:92px;max-width:44vw;height:auto;object-fit:contain;display:block;}
+.project-gallery--vans-v39 .nikon-gallery__caption {color:#858585;}
+.project-gallery--vans-v39 .nikon-gallery__caption a {color:inherit;text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:3px;white-space:nowrap;}
+.project-gallery--vans-v39 .nikon-gallery__caption a:hover {color:#222;}
+.project-gallery--vans-v39 .vans-gallery__row--1,
+.project-gallery--vans-v39 .vans-gallery__row--3 {grid-template-columns:minmax(0,1fr);}
+.project-gallery--vans-v39 .vans-gallery__row--2 {grid-template-columns:repeat(3,minmax(0,1fr));}
+/* The two mockups have source aspect ratios .7 and 1.5: widths proportional to these ratios make heights match without cropping. */
+.project-gallery--vans-v39 .vans-gallery__row--4 {grid-template-columns:minmax(0,.7fr) minmax(0,1.5fr);}
+.project-gallery--vans-v39 .vans-gallery__row--2 img,
+.project-gallery--vans-v39 .vans-gallery__row--4 img {width:100%;height:auto;display:block;}
+.project-gallery--vans-v39 .vans-video-thumb {display:block;position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background-color:#222;background-image:var(--video-fallback);background-position:center;background-size:cover;}
+.project-gallery--vans-v39 .vans-video-thumb > img {width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;}
+.project-gallery--vans-v39 .vans-video-thumb:hover > img {transform:scale(1.015);}
+.project-gallery--vans-v39 .vans-video-thumb:focus-visible {outline:2px solid #333;outline-offset:4px;}
+@media(max-width:760px) {
+  .project-gallery--vans-v39 .vans-gallery__row--2 {grid-template-columns:repeat(3,minmax(0,1fr));}
+  .project-client-logo--vans {width:103px;}
+}
+@media(max-width:520px) {
+  .project-gallery--vans-v39 .vans-gallery__row--2 {grid-template-columns:minmax(0,1fr);}
+  .project-gallery--vans-v39 .vans-gallery__row--4 {grid-template-columns:minmax(0,1fr);}
+  .project-client-logo--vans {width:94px;}
+}
+
+
+/* V40 — Peugeot : vrai visuel au hover Home et galerie structurée. */
+.work-preview[data-preview="details"] {background:#d9d9d9 url("assets/images/peugeot/peugeot-hover-square.webp") center / cover no-repeat;}
+.project-gallery--peugeot-v40 .nikon-gallery__caption {color:#858585;}
+.project-gallery--peugeot-v40 .nikon-gallery__caption a {color:inherit;text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:3px;white-space:nowrap;}
+.project-gallery--peugeot-v40 .nikon-gallery__caption a:hover {color:#222;}
+.project-gallery--peugeot-v40 .peugeot-gallery__row--1 {grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;}
+.project-gallery--peugeot-v40 .peugeot-gallery__row--2,.project-gallery--peugeot-v40 .peugeot-gallery__row--4,.project-gallery--peugeot-v40 .peugeot-gallery__row--6 {grid-template-columns:minmax(0,1fr);}
+.project-gallery--peugeot-v40 .peugeot-gallery__row--3 {grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;}
+.project-gallery--peugeot-v40 .peugeot-gallery__media {line-height:0;background:transparent !important;overflow:hidden;}
+.project-gallery--peugeot-v40 .peugeot-gallery__media--kv {aspect-ratio:763/1080 !important;}
+.project-gallery--peugeot-v40 .peugeot-gallery__media--mockup {aspect-ratio:4/3 !important;}
+.project-gallery--peugeot-v40 .peugeot-gallery__media--slogan {aspect-ratio:1838/326 !important;}
+.project-gallery--peugeot-v40 .peugeot-gallery__media img {width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.65,.2,1);}
+.project-gallery--peugeot-v40 .peugeot-gallery__media--slogan img {object-fit:contain;background:#000;}
+.project-gallery--peugeot-v40 .peugeot-video-thumb {display:block;position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#111;}
+.project-gallery--peugeot-v40 .peugeot-video-thumb img {width:100%;height:100%;object-fit:cover;display:block;}
+@media(max-width:980px){.project-gallery--peugeot-v40 .peugeot-gallery__row--1 {grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:520px){.project-gallery--peugeot-v40 .peugeot-gallery__row--1,.project-gallery--peugeot-v40 .peugeot-gallery__row--3 {grid-template-columns:minmax(0,1fr);} .project-gallery--peugeot-v40 .nikon-gallery__caption a {white-space:normal;}}
+
+/* V42 — Home previews updated for LIMEN and SOS. */
+.work-preview[data-preview="limits"] {background:#c9c9c9 url("assets/images/limen/limen-cover-v42.webp") center / cover no-repeat;}
+.work-preview[data-preview="poem"] {background:#bfbfbf url("assets/images/sos/sos-cover.webp") center / cover no-repeat;}
+
+/* V42 — SOS Villages d’Enfants project page. */
+.project-client-block--sos {gap:10px;}
+.project-client-logo--sos {display:block;width:clamp(182px,16vw,236px);max-width:58vw;height:auto;object-fit:contain;}
+.project-shortlist {
+  display:flex;align-items:flex-start;justify-content:center;gap:8px;
+  margin:0;color:#111;font:600 clamp(13px,1vw,15px)/1.45 var(--sans);letter-spacing:-.015em;text-align:center;
+}
+.project-shortlist em {font-style:italic;font-weight:600;}
+.project-shortlist-icon {display:inline-flex;flex:0 0 auto;width:14px;height:14px;margin-top:3px;color:#111;}
+.project-shortlist-icon svg {display:block;width:100%;height:100%;}
+.project-gallery--sos-v42 .nikon-gallery__caption {color:#858585;}
+.project-gallery--sos-v42 .nikon-gallery__caption-line a {
+  color:inherit;text-decoration:underline;text-decoration-color:#bbb;text-underline-offset:2px;transition:color .2s ease;
+}
+.project-gallery--sos-v42 .nikon-gallery__caption-line a:hover {color:#111;}
+.project-gallery--sos-v42 .nikon-gallery__caption-line a:focus-visible {outline:2px solid #777;outline-offset:2px;}
+.project-gallery--sos-v42 .sos-gallery__row--1 {grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);}
+.project-gallery--sos-v42 .sos-gallery__row--2 {grid-template-columns:minmax(0,1fr);}
+.project-gallery--sos-v42 .sos-gallery__row--3 {grid-template-columns:repeat(3,minmax(0,1fr));}
+.project-gallery--sos-v42 .sos-gallery__row--4 {grid-template-columns:minmax(0,1.16fr) minmax(0,.6fr);align-items:start;}
+.project-gallery--sos-v42 .sos-gallery__media--social img {width:100%;height:auto;display:block;}
+@media (max-width:980px) {
+  .project-client-logo--sos {width:206px;}
+  .project-gallery--sos-v42 .sos-gallery__row--3 {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .project-gallery--sos-v42 .sos-gallery__row--3 .nikon-gallery__item:first-child {grid-column:1 / -1;}
+}
+@media (max-width:680px) {
+  .project-gallery--sos-v42 .sos-gallery__row--1,
+  .project-gallery--sos-v42 .sos-gallery__row--3,
+  .project-gallery--sos-v42 .sos-gallery__row--4 {grid-template-columns:minmax(0,1fr);}
+  .project-gallery--sos-v42 .sos-gallery__row--3 .nikon-gallery__item:first-child {grid-column:auto;}
+  .project-gallery--sos-v42 .nikon-gallery__caption {white-space:normal;}
+}
+
+/* V43 — alignements des mockups et des formats verticaux SOS */
+.project-gallery--sos-v42 .sos-gallery__row--1{grid-template-columns:minmax(0,1.75fr) minmax(0,.65fr);align-items:center;}
+.project-gallery--sos-v42 .sos-gallery__row--4{grid-template-columns:minmax(0,1.65fr) minmax(0,.52fr);align-items:center;}
+.project-gallery--sos-v42 .sos-gallery__row--1 .nikon-gallery__item:nth-child(2) .gallery-media,.project-gallery--sos-v42 .sos-gallery__row--4 .nikon-gallery__item:nth-child(2) .gallery-media{display:flex;align-items:center;justify-content:center;}
+.project-gallery--sos-v42 .sos-gallery__row--1 .nikon-gallery__item:nth-child(2) img,.project-gallery--sos-v42 .sos-gallery__row--4 .nikon-gallery__item:nth-child(2) img{width:auto;max-width:100%;max-height:560px;object-fit:contain;}
+.project-client-logo--limen{width:148px;height:auto;}
+.project-client-block--vans{gap:17px;}
+.project-client-block--sos{gap:19px;}
+.project-client-logo--sos{width:clamp(195px,17.5vw,250px);max-width:70vw;object-fit:contain;object-position:center;}
+.project-client-block--singularity{gap:14px;}
+.project-client-logo--singularity{width:clamp(205px,23vw,315px);max-width:72vw;height:auto;object-fit:contain;}
+.project-gallery--limen-v34 .nikon-gallery__caption a{color:inherit;text-decoration:underline;text-decoration-color:#aaa;text-underline-offset:3px;}
+.project-gallery--limen-v34 .nikon-gallery__caption a:hover{color:#202020;}
+@media(max-width:900px){.project-client-logo--limen{width:130px;}}
+@media(max-width:680px){.project-gallery--sos-v42 .sos-gallery__row--1,.project-gallery--sos-v42 .sos-gallery__row--4{grid-template-columns:minmax(0,1fr);}.project-gallery--sos-v42 .sos-gallery__row--1 .nikon-gallery__item:nth-child(2) img,.project-gallery--sos-v42 .sos-gallery__row--4 .nikon-gallery__item:nth-child(2) img{max-height:440px;}.project-client-logo--limen{width:110px;}}
+/* V43 : ratio de colonnes calculé sur les proportions d'origine pour des bas d'images alignés. */
+@media(min-width:681px){
+.project-gallery--sos-v42 .sos-gallery__row--1{grid-template-columns:minmax(0,1.5fr) minmax(0,.7fr);align-items:start;}
+.project-gallery--sos-v42 .sos-gallery__row--4{grid-template-columns:minmax(0,1.7fr) minmax(0,.5fr);align-items:start;}
+.project-gallery--sos-v42 .sos-gallery__row--1 .nikon-gallery__item:nth-child(2) img,
+.project-gallery--sos-v42 .sos-gallery__row--4 .nikon-gallery__item:nth-child(2) img{width:100%;max-height:none;height:auto;}
+}
+
+
+/* V44 — Ajustements demandés par l'utilisateur. */
+.work-preview[data-preview="singularity"] {background:#e0e0e0 url("assets/images/singularity/singularity-cover-hero.webp") center / cover no-repeat;}
+.project-cover--sos .project-cover-image {filter:brightness(.56);}
+.project-cover--sos .project-cover-shade {background:linear-gradient(180deg, rgba(0,0,0,.22) 0%, rgba(0,0,0,.42) 55%, rgba(0,0,0,.29) 100%);}
+.project-cover--singularity .project-cover-image {filter:brightness(.58);object-position:center;}
+.project-cover--singularity .project-cover-shade {background:linear-gradient(180deg, rgba(0,0,0,.24) 0%, rgba(0,0,0,.46) 56%, rgba(0,0,0,.30) 100%);}
+.project-client-logo--limen{width:166px;height:auto;}
+.project-client-block--limen-tight{gap:5px;}
+.project-client-block--limen-tight .project-client{gap:9px;}
+@media(max-width:900px){.project-client-logo--limen{width:144px;}}
+@media(max-width:680px){.project-client-logo--limen{width:122px;}.project-client-block--limen-tight{gap:4px;}}
+.project-gallery--singularity-v44 .nikon-gallery__caption{color:#858585;}
+.project-gallery--singularity-v44 .singularity-gallery__row--1{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);align-items:start;}
+.project-gallery--singularity-v44 .singularity-gallery__row--2{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;}
+.project-gallery--singularity-v44 .singularity-gallery__row--3{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);align-items:start;}
+.project-gallery--singularity-v44 .singularity-gallery__row--4{grid-template-columns:minmax(0,1fr);align-items:start;}
+.project-gallery--singularity-v44 .singularity-gallery__media{line-height:0;background:transparent !important;overflow:hidden;}
+.project-gallery--singularity-v44 .singularity-gallery__media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.65,.2,1);}
+.project-gallery--singularity-v44 .singularity-gallery__media--cover{aspect-ratio:4/5 !important;}
+.project-gallery--singularity-v44 .singularity-gallery__media--spread{aspect-ratio:4/3 !important;}
+.project-gallery--singularity-v44 .singularity-gallery__media--hero{aspect-ratio:1236/805 !important;}
+.project-gallery--singularity-v44 .singularity-gallery__media--mockup6{aspect-ratio:1582/1212 !important;}
+.project-gallery--singularity-v44 .singularity-gallery__media--mockup3{aspect-ratio:4/3 !important;}
+.project-gallery--singularity-v44 .singularity-gallery__media--astronaut{aspect-ratio:4/3 !important;}
+@media(max-width:980px){
+  .project-gallery--singularity-v44 .singularity-gallery__row--2{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .project-gallery--singularity-v44 .singularity-gallery__row--2 .nikon-gallery__item:first-child{grid-column:1 / -1;}
+}
+@media(max-width:680px){
+  .project-gallery--singularity-v44 .singularity-gallery__row--1,
+  .project-gallery--singularity-v44 .singularity-gallery__row--2,
+  .project-gallery--singularity-v44 .singularity-gallery__row--3,
+  .project-gallery--singularity-v44 .singularity-gallery__row--4{grid-template-columns:minmax(0,1fr);}
+  .project-gallery--singularity-v44 .singularity-gallery__row--2 .nikon-gallery__item:first-child{grid-column:auto;}
+}
+
+
+/* V45 — accueil : déplacer légèrement le CTA sans toucher aux projets. */
+.work-center > .all-projects {margin-top:14px;}
+@media(max-width:680px){.work-center > .all-projects{margin-top:9px;}}
+
+/* V45 — Singularity : nouveau mockup noir au survol et dans le hero. */
+.work-preview[data-preview="singularity"] {
+  background:#161616 url("assets/images/singularity/singularity-black-mockup-8.webp") center / cover no-repeat;
+}
+.project-cover--singularity .project-cover-image {object-position:center;}
+
+/* V45 — Singularity : deux pages pleine largeur, trois mockups, un volume I, deux spreads. */
+.project-gallery--singularity-v45 .singularity-gallery__row--1,
+.project-gallery--singularity-v45 .singularity-gallery__row--2,
+.project-gallery--singularity-v45 .singularity-gallery__row--4 {
+  grid-template-columns:minmax(0,1fr);
+}
+.project-gallery--singularity-v45 .singularity-gallery__row--3 {
+  grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;
+}
+.project-gallery--singularity-v45 .singularity-gallery__row--5 {
+  grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;
+}
+.project-gallery--singularity-v45 .singularity-gallery__media {background:transparent!important;line-height:0;overflow:hidden;}
+.project-gallery--singularity-v45 .singularity-gallery__media img {display:block;width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.2,.65,.2,1);}
+.project-gallery--singularity-v45 .singularity-gallery__media--natural {height:auto;aspect-ratio:auto!important;}
+.project-gallery--singularity-v45 .singularity-gallery__media--natural img {width:100%;height:auto;object-fit:contain;}
+.project-gallery--singularity-v45 .singularity-gallery__media--trio,
+.project-gallery--singularity-v45 .singularity-gallery__media--pair {aspect-ratio:4/3!important;}
+.project-gallery--singularity-v45 .nikon-gallery__caption {
+  color:#858585;white-space:normal;text-wrap:pretty;overflow-wrap:break-word;
+}
+.project-gallery--singularity-v45 .singularity-gallery__row--3 .nikon-gallery__caption {font-size:11.5px;}
+@media(max-width:920px){
+  .project-gallery--singularity-v45 .singularity-gallery__row--3 {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .project-gallery--singularity-v45 .singularity-gallery__row--3 .nikon-gallery__item:first-child {grid-column:1/-1;}
+  .project-gallery--singularity-v45 .singularity-gallery__row--3 .nikon-gallery__item:first-child .singularity-gallery__media {aspect-ratio:16/10!important;}
+}
+@media(max-width:640px){
+  .project-gallery--singularity-v45 .singularity-gallery__row--3,
+  .project-gallery--singularity-v45 .singularity-gallery__row--5 {grid-template-columns:minmax(0,1fr);}
+  .project-gallery--singularity-v45 .singularity-gallery__row--3 .nikon-gallery__item:first-child{grid-column:auto;}
+  .project-gallery--singularity-v45 .singularity-gallery__row--3 .nikon-gallery__item:first-child .singularity-gallery__media{aspect-ratio:4/3!important;}
+}
+
+/* V45 — SOS : image recadrée, logo effectivement centré sur le même axe que le client. */
+.project-client-block--sos {align-items:center;}
+.project-client-block--sos .project-client-logo--sos {
+  display:block;width:clamp(195px,17.5vw,250px);max-width:min(70vw,100%);
+  height:auto;align-self:center;margin:0 auto;object-fit:contain;object-position:center;
+}
+
+/* V45 — LIMEN : augmenter la taille du logo, conserver un lien visuel avec le nom. */
+.project-client-block--limen-tight .project-client-logo--limen {width:195px;height:auto;max-width:75vw;}
+.project-client-block--limen-tight {gap:4px;}
+@media(max-width:900px){.project-client-block--limen-tight .project-client-logo--limen{width:166px;}}
+@media(max-width:680px){.project-client-block--limen-tight .project-client-logo--limen{width:140px;}}
+
+/* V45 — Peugeot : légendes descriptives, une ligne si l'espace le permet. */
+.project-gallery--peugeot-v40 .nikon-gallery__caption {white-space:normal;overflow-wrap:break-word;text-wrap:pretty;}
+.project-gallery--peugeot-v40 .peugeot-gallery__row--1 .nikon-gallery__caption {font-size:11.5px;}
+
+
+/* V48 — Nikon : guide pratique et déclinaisons en pleine largeur ;
+   abribus avec PLV et remis de visite ; PowerPoints regroupés sur une ligne. */
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--1,
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--5,
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--6 {grid-template-columns:minmax(0,1fr);}
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--2,
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--7 {grid-template-columns:repeat(2,minmax(0,1fr));}
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--3 {grid-template-columns:minmax(0,1.778fr) minmax(0,1.418fr) minmax(0,1.425fr);}
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--4 {grid-template-columns:repeat(4,minmax(0,1fr));}
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--8 {grid-template-columns:minmax(0,.65fr) minmax(0,1.135fr) minmax(0,.912fr);}
+/* Natural ratios are maintained for the guide, brochures, slides and single-width campaigns. */
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--2 .nikon-gallery__item:first-child,
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--3 .nikon-gallery__item:first-child {grid-column:auto;}
+@media(max-width:900px){
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--4 {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--3 {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--3 .nikon-gallery__item:last-child {grid-column:1/-1;}
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--8 {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--8 .nikon-gallery__item:last-child {grid-column:1/-1;}
+}
+@media(max-width:600px){
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--2,
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--3,
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--4,
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--7,
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--8 {grid-template-columns:minmax(0,1fr);}
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--3 .nikon-gallery__item:last-child,
+ .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--8 .nikon-gallery__item:last-child {grid-column:auto;}
+}
+
+
+/* V49 — Home : toutes les images survolées ont le même format carré
+   et la même taille, avec recadrage par background-size:cover. */
+.work-preview[data-preview] {--preview-size:235px;}
+
+/* V49 — Nikon : deux présentations PPT par rangée ;
+   retrait du collage des déclinaisons de campagne. */
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--4,
+.project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--5 {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+@media (max-width:600px) {
+  .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--4,
+  .project-gallery--nikon-v26 .nikon-gallery--v48 .nikon-gallery__row--5 {
+    grid-template-columns:minmax(0,1fr);
+  }
+}
+
+/* V50 — Gallery changes: Rimowa lightweight looping MP4; LIMEN three editorial mockups. */
+.project-gallery--rimowa-v35 .rimowa-gallery__media--row1 video {
+  display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;
+}
+.project-gallery--limen-v34 .limen-gallery__row--2 {
+  grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;
+}
+.project-gallery--limen-v34 .limen-gallery__media--publication {
+  aspect-ratio:3/2 !important;overflow:hidden;line-height:0;background:transparent !important;
+}
+.project-gallery--limen-v34 .limen-gallery__media--publication img {
+  display:block;width:100%;height:100% !important;object-fit:cover !important;
+  transition:transform .45s cubic-bezier(.2,.65,.2,1);
+}
+@media(max-width:850px) and (min-width:521px) {
+ .project-gallery--limen-v34 .limen-gallery__row--2 {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .project-gallery--limen-v34 .limen-gallery__row--2 .nikon-gallery__item:last-child {grid-column:1 / -1;}
+ .project-gallery--limen-v34 .limen-gallery__row--2 .nikon-gallery__item:last-child .limen-gallery__media--publication {aspect-ratio:16/9 !important;}
+}
+@media(max-width:520px) {
+ .project-gallery--limen-v34 .limen-gallery__row--2 {grid-template-columns:minmax(0,1fr);}
+}
+
+
+/* === V53 : derniers ajustements portfolio === */
+.about-contact--email {
+  font:400 clamp(65px,5.85vw,118px)/1.07 var(--serif);
+  letter-spacing:-.014em;
+}
+/* About : l'adresse e-mail doit rester dans le viewport sur mobile et tablette.
+   Le rendu et la taille d'origine sur ordinateur sont conserves. */
+@media (max-width:900px) {
+  .about-contact--email {font-size:clamp(18px,7.2vw,65px);line-height:1.06;}
+}
+.project-client-block--limen-tight .project-client-logo--limen {
+  transform:translateY(-6px);
+}
+@media (max-width:900px){
+  .project-client-block--limen-tight .project-client-logo--limen {transform:translateY(-5px);}
+}
+@media (max-width:680px){
+  .project-client-block--limen-tight .project-client-logo--limen {transform:translateY(-4px);}
+}
