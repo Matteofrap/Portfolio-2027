@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="140" viewBox="0 0 480 140" role="img" aria-label="Logo LIMEN">
+  <rect width="480" height="140" fill="none"/>
+  <g transform="translate(24 18) skewX(-16)">
+    <text x="0" y="86" font-family="Inter, Arial, Helvetica, sans-serif" font-size="88" font-style="italic" font-weight="800" letter-spacing="-4" fill="#111111">LIMEN</text>
+  </g>
+</svg>
